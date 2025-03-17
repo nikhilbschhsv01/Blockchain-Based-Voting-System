@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import ElectionContract, { web3 } from "../../web3";
+const ElectionContract = require("../../web3");
+const { web3 } = require("../../web3");
 
-export default async (_: Request, res: Response) => {
+module.exports = async (_, res) => {
   const accounts = await web3.eth.getAccounts();
   const instance = await ElectionContract.deployed();
 

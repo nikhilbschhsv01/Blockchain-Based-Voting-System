@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import * as yup from "yup";
-import ElectionContract, { web3 } from "../../web3";
+const yup = require("yup");
+const ElectionContract = require("../../web3");
+const { web3 } = require("../../web3");
 
 const schema = yup.object({
   body: yup.object({
@@ -15,10 +15,10 @@ const schema = yup.object({
   }),
 });
 
-export default async (req: Request, res: Response) => {
+module.exports = async (req, res) => {
   try {
     await schema.validate(req);
-  } catch (error: any) {
+  } catch (error) {
     return res.status(400).send(error.errors);
   }
 

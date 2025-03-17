@@ -1,13 +1,4 @@
-type UserType = {
-  name: string;
-  email: string;
-  password: string;
-  citizenshipNumber: string;
-  admin: boolean;
-  verified: boolean;
-};
-
-const users: UserType[] = [
+const users = [
   {
     name: "John",
     citizenshipNumber: "9860777906",
@@ -34,4 +25,4 @@ const users: UserType[] = [
   },
 ];
 
-export default users;
+module.exports = users;

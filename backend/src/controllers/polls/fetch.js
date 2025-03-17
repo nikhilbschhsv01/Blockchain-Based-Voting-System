@@ -1,7 +1,6 @@
-import { Request, Response } from "express";
-import ElectionContract from "../../web3";
+const ElectionContract = require("../../web3");
 
-export default async (req: Request, res: Response) => {
+module.exports = async (req, res) => {
   const instance = await ElectionContract.deployed();
   const name = await instance.getElectionName();
   const description = await instance.getElectionDescription();
@@ -9,7 +8,7 @@ export default async (req: Request, res: Response) => {
   const candidates = await instance.getCandidates();
   const votes = await instance.getVotes();
 
-  const response: any = {};
+  const response = {};
 
   for (let i = 0; i < candidates.length; i++) {
     response[candidates[i]] = 0;
@@ -18,7 +17,7 @@ export default async (req: Request, res: Response) => {
   for (let i = 0; i < votes.length; i++) {
     const vote = votes[i];
 
-    if (typeof response[vote[3]] != "undefined")
+    if (typeof response[vote[3]] !== "undefined")
       response[vote[3]] = response[vote[3]] + 1;
   }
 

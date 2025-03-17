@@ -1,6 +1,5 @@
-import { Request, Response } from "express";
-import { User } from "../../entity/User";
-import * as yup from "yup";
+const { User } = require("../../entity/User");
+const yup = require("yup");
 
 const schema = yup.object({
   body: yup.object({
@@ -8,10 +7,10 @@ const schema = yup.object({
   }),
 });
 
-export default async (req: Request, res: Response) => {
+module.exports = async (req, res) => {
   try {
     await schema.validate(req);
-  } catch (error: any) {
+  } catch (error) {
     return res.status(400).send(error.errors);
   }
 

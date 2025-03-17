@@ -1,10 +1,10 @@
-import express, { Request, Response } from "express";
-import cookieParser from "cookie-parser";
-import cors from "cors";
+const express = require("express");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
-import authRouter from "./routers/auth";
-import pollsRouter from "./routers/polls";
-import usersRouter from "./routers/users";
+const authRouter = require("./routers/auth");
+const pollsRouter = require("./routers/polls");
+const usersRouter = require("./routers/users");
 
 const app = express();
 
@@ -15,9 +15,9 @@ app.use("/auth", authRouter);
 app.use("/polls", pollsRouter);
 app.use("/users", usersRouter);
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
   console.log(req.cookies);
   res.status(404).send("no link matched!");
 });
 
-export default app;
+module.exports = app;

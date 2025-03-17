@@ -1,7 +1,6 @@
-import { Request, Response } from "express";
-import ElectionContract, { web3 } from "../../web3";
-// import memoryCache from "memory-cache";
-import * as yup from "yup";
+const ElectionContract = require("../../web3");
+const { web3 } = require("../../web3");
+const yup = require("yup");
 
 const checkSchema = yup.object({
   body: yup.object({
@@ -9,7 +8,7 @@ const checkSchema = yup.object({
   }),
 });
 
-export const checkVoteability = async (req: Request, res: Response) => {
+const checkVoteability = async (req, res) => {
   try {
     await checkSchema.validate(req);
   } catch (error) {
@@ -17,15 +16,16 @@ export const checkVoteability = async (req: Request, res: Response) => {
   }
 
   const instance = await ElectionContract.deployed();
-  const voters: Array<any> = await instance.getVoters();
-  const status: "not-started" | "running" | "finished" =
-    await instance.getStatus();
+  const voters = await instance.getVoters();
+  const status = await instance.getStatus();
 
   if (status !== "running") return res.status(400).send("election not running");
   if (voters.includes(req.body.id)) return res.send("already-voted");
 
   return res.send("not-voted");
 };
+
+module.exports.checkVoteability = checkVoteability;
 
 const schema = yup.object({
   body: yup.object({
@@ -35,17 +35,17 @@ const schema = yup.object({
   }),
 });
 
-export default async (req: Request, res: Response) => {
+const voteController = async (req, res) => {
   try {
     await schema.validate(req);
-  } catch (error: any) {
+  } catch (error) {
     return res.status(400).send(error.errors);
   }
 
   const accounts = await web3.eth.getAccounts();
   const instance = await ElectionContract.deployed();
-  const voters: Array<any> = await instance.getVoters();
-  const candidates: Array<any> = await instance.getCandidates();
+  const voters = await instance.getVoters();
+  const candidates = await instance.getCandidates();
 
   if (voters.includes(req.body.id))
     return res.status(400).send("already voted");
@@ -59,3 +59,5 @@ export default async (req: Request, res: Response) => {
 
   return res.send("successful");
 };
+
+module.exports.default = voteController;

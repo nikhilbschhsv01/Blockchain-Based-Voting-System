@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
-import ElectionContract, { web3 } from "../../web3";
-import memoryCache from "memory-cache";
+const { web3 } = require("../../web3");
+const ElectionContract = require("../../web3").default;
+const memoryCache = require("memory-cache");
 
-export default async (_: Request, res: Response) => {
+module.exports = async (_, res) => {
   const accounts = await web3.eth.getAccounts();
   const instance = await ElectionContract.deployed();
 

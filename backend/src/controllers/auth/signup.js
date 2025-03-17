@@ -1,7 +1,6 @@
-import { Request, Response } from "express";
-import * as yup from "yup";
-import { User } from "../../entity/User";
-import bcrypt from "bcrypt";
+const yup = require("yup");
+const { User } = require("../../entity/User");
+const bcrypt = require("bcrypt");
 
 const schema = yup.object({
   body: yup.object({
@@ -12,14 +11,14 @@ const schema = yup.object({
   }),
 });
 
-export default async (req: Request, res: Response) => {
+module.exports = async (req, res) => {
   try {
     await schema.validate(req);
-  } catch (error: any) {
+  } catch (error) {
     return res.status(400).send(error.errors);
   }
 
-  let hashedPassword = undefined;
+  let hashedPassword;
 
   try {
     hashedPassword = await bcrypt.hash(req.body.password, 10);

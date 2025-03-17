@@ -1,7 +1,6 @@
-import { Request, Response } from "express";
-import { User } from "../../entity/User";
+const { User } = require("../../entity/User");
 
-export default async (req: Request, res: Response) => {
+module.exports = async (req, res) => {
   const { id } = req.params;
 
   if (!id) return res.status(400).send("no id found");

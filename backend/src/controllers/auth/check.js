@@ -1,8 +1,7 @@
-import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import dayjs from "dayjs";
+const jwt = require("jsonwebtoken");
+const dayjs = require("dayjs");
 
-export default async (req: Request, res: Response) => {
+module.exports = async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
 
   if (!refreshToken) return res.status(400).send("not authenticated");
@@ -24,7 +23,7 @@ export default async (req: Request, res: Response) => {
       return res.status(500).send("server error");
     }
 
-    const user: any = jwt.verify(refreshToken, refreshTokenSecret);
+    const user = jwt.verify(refreshToken, refreshTokenSecret);
 
     const userPlainObj = {
       id: user.id,
